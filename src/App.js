@@ -1,9 +1,28 @@
-import React from 'react'
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { Login } from 'components/Login';
+import { NotFound } from 'components/NotFound';
+import { StartPage } from 'components/StartPage';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { likes } from 'reducers/likes';
+import { user } from 'reducers/user';
 
 export const App = () => {
+  const reducer = combineReducers({
+    user: user.reducer,
+    likes: likes.reducer
+  });
+  const store = configureStore({ reducer })
   return (
-    <div>
-      Find me in src/app.js!
-    </div>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<StartPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   )
 }
