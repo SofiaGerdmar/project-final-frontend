@@ -1,48 +1,22 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable max-len */
 
-import React/* , { useEffect }  */from 'react';
+import React, { useEffect, useState } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // import { thoughts } from 'reducers/thoughts';
-// // import { API_URL } from 'utils/urls';
+import { API_URL } from 'utils/urls';
 // import { user } from 'reducers/user';
 import styled from 'styled-components/macro';
+// import { Header } from './Header';
 
 const StyledSVG = styled.svg`
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    -webkit-transform: translate(-50%,-50%);
-    transform: translate(-50%,-50%);
     width: 60vw;
 `
 export const StartPage = () => {
-  //   const StyledSection = styled.div`
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
-  // text-align: center;
-  // max-width: 80vw;
-  // background-color: rgba(255,255,255,0.9);
-  // margin-top: 50%;
-  // border-radius: 10px 25px;
-
-  // `
-  //   const Styledh1 = styled.h1`
-  // margin: 80px 30px 20px 30px;
-  // color: #DFA8AA;
-  // `
-  //   const StyledBtn = styled.button`
-  // margin: 50px;
-  // font-family: "Montserrat", sans-serif;
-  // background-color: #EFDAD7;
-  // padding: 10px 20px;
-  // border: none;
-  // border-radius: 10px 15px;
-  // font-size: 16px;
-  // outline: none;
-  // cursor: pointer;
-  // `
-
+  const navigate = useNavigate();
+  const [locations, setLocations] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState('');
   //   const thoughtsItems = useSelector((store) => store.thoughts.items);
   //   const dispatch = useDispatch();
   //   const accessToken = useSelector((store) => store.user.accessToken);
@@ -54,26 +28,38 @@ export const StartPage = () => {
   //     }
   //   }, [accessToken, navigate]);
 
-  //   useEffect(() => {
-  //     const options = {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: accessToken
-  //       }
-  //     }
-  //     fetch(API_URL('sites'), options)
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         if (data.success) {
-  //           dispatch(thoughts.actions.setError(null));
-  //           dispatch(thoughts.actions.setItems(data.response));
-  //         } else {
-  //           dispatch(thoughts.actions.setError(response));
-  //           dispatch(thoughts.actions.setItems([]));
-  //         }
-  //       });
-  //   })
+  useEffect(() => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    fetch(API_URL('sites'), options)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.body) {
+          const locationNames = data.body.map((location, index) => ({
+            name: location.location,
+            key: `${location.location}_${index}`
+          }));
+          setLocations(locationNames);
+        }
+      });
+  }, []);
+
+  const handleLocationSelect = (event) => {
+    setSelectedLocation(event.target.value);
+  };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    if (selectedLocation) {
+      console.log(selectedLocation)
+      navigate(`/${encodeURIComponent(selectedLocation)}`);
+    }
+  };
   //   const onLogoutButtonClick = () => {
   //     dispatch(user.actions.setAccessToken(null));
   //     dispatch(user.actions.setUsername(null));
@@ -85,6 +71,7 @@ export const StartPage = () => {
   //   }
   return (
     <section>
+      {/* <Header /> */}
       <h1>Discover the gems of Italy</h1>
       <StyledSVG version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" id="blobSvg" style={{ opacity: 1 }}><image x="0" y="0" width="100%" height="100%" clipPath="url(#shape)" href="/rialto-bridge.jpg" preserveAspectRatio="none" />
         <defs>
@@ -99,15 +86,16 @@ export const StartPage = () => {
           </path>
         </clipPath>
       </StyledSVG>
-      {/* {username ? (<Styledh1>Hi there {capitalizeFirstLetter(username)}!</Styledh1>) : ''}
-      {thoughtsItems.map((item) => {
-        return (
-          <ul>
-            <li key={item._id}>{item.message}</li>
-          </ul>
-        )
-      })} */}
-      {/* <StyledBtn type="button" onClick={onLogoutButtonClick}>Log out</StyledBtn> */}
+      <form onSubmit={handleFormSubmit}>
+        <label htmlFor="search">
+          <input type="search" id="search" name="search" placeholder="Enter a location" list="locationOptions" onChange={handleLocationSelect} />
+          <datalist id="locationOptions">
+            {locations.map((location) => (
+              <option value={location.name} key={location.key}>{location.name}</option>
+            ))}
+          </datalist>
+        </label>
+      </form>
     </section>
-  )
+  );
 }

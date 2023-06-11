@@ -74,6 +74,9 @@ export const Login = () => {
           dispatch(user.actions.setUsername(null))
           dispatch(user.actions.setUserId(null))
           dispatch(user.actions.setError(data.response))
+          if (data.response === 'Credentials do not match') {
+            alert('No account found. Please sign up.')
+          }
         }
       })
   }
