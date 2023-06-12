@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { API_URL } from 'utils/urls';
 // import { user } from 'reducers/user';
 import styled from 'styled-components/macro';
-// import { Header } from './Header';
 
 const StyledSVG = styled.svg`
     width: 60vw;
@@ -71,7 +70,6 @@ export const StartPage = () => {
   //   }
   return (
     <section>
-      {/* <Header /> */}
       <h1>Discover the gems of Italy</h1>
       <StyledSVG version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" id="blobSvg" style={{ opacity: 1 }}><image x="0" y="0" width="100%" height="100%" clipPath="url(#shape)" href="/rialto-bridge.jpg" preserveAspectRatio="none" />
         <defs>

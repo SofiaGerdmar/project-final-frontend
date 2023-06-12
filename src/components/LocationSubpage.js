@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { API_URL } from 'utils/urls';
-// import { Header } from './Header';
 
 export const LocationSubpage = () => {
   const { location } = useParams();
@@ -37,9 +36,9 @@ export const LocationSubpage = () => {
 
   return (
     <section>
-      {/* <Header /> */}
       {siteData.map((site) => (
         <div key={site._id}>
+          <img src={site.img} alt={site.name} />
           <h2>{site.name}</h2>
           <p>{site.description}</p>
         </div>
