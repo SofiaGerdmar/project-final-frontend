@@ -1,7 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { Destinations } from 'components/Destinations';
 import { Header } from 'components/Header';
-import { Info } from 'components/Info';
 import { LocationSubpage } from 'components/LocationSubpage';
 import { Login } from 'components/Login';
 import { NotFound } from 'components/NotFound';
@@ -28,7 +27,6 @@ export const App = () => {
           <Route path="*" element={<NotFound />} />
           <Route path="/:location" element={<LocationSubpage />} />
           <Route path="/destinations" element={<Destinations />} />
-          <Route path="/information" element={<Info />} />
         </Routes>
       </BrowserRouter>
     </Provider>

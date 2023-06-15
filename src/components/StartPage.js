@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable max-len */
 
@@ -9,23 +10,51 @@ import { API_URL } from 'utils/urls';
 // import { user } from 'reducers/user';
 import styled from 'styled-components/macro';
 
+const StyledSection = styled.section`
+display: flex;
+flex-direction: column;
+align-items: center;
+`
 const StyledSVG = styled.svg`
-    width: 60vw;
+display: flex;
+flex-direction: column;
+align-items: center;
+width: 1000px;
+z-index: -1;
+position: absolute;
+top: 40px;
+`
+const StyledInput = styled.input`
+background-color: rgba(250, 250, 250, 0.9);
+color: black;
+font-family: 'Poppins', sans-serif;
+font-size: 1rem;
+border: none;
+border-radius: 1.3rem;
+padding: 10px 5px 10px 20px;
+width: 300px;
+outline: #1e3438;
+z-index: 1;
+margin-top: 250px;
+`
+const StyledH1 = styled.h1`
+font-size: 2.5rem;
+font-weight: 700;
+margin: 290px 0 40px 0;
+z-index: 1;
+`
+const StyledH2 = styled.h2`
+font-size: 1.2rem;
+font-weight: 300;
+font-style: italic;
+text-align: center;
+line-height: 2rem;
+width: 620px;
 `
 export const StartPage = () => {
   const navigate = useNavigate();
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState('');
-  //   const thoughtsItems = useSelector((store) => store.thoughts.items);
-  //   const dispatch = useDispatch();
-  //   const accessToken = useSelector((store) => store.user.accessToken);
-  //   const username = useSelector((store) => store.user.username);
-  //   const navigate = useNavigate();
-  //   useEffect(() => {
-  //     if (!accessToken) {
-  //       navigate('/login')
-  //     }
-  //   }, [accessToken, navigate]);
 
   useEffect(() => {
     const options = {
@@ -59,19 +88,12 @@ export const StartPage = () => {
       navigate(`/${encodeURIComponent(selectedLocation)}`);
     }
   };
-  //   const onLogoutButtonClick = () => {
-  //     dispatch(user.actions.setAccessToken(null));
-  //     dispatch(user.actions.setUsername(null));
-  //     dispatch(user.actions.setUserId(null));
-  //     dispatch(user.actions.setError(null));
-  //   }
-  //   const capitalizeFirstLetter = (string) => {
-  //     return string.charAt(0).toUpperCase() + string.slice(1);
-  //   }
+
   return (
-    <section>
-      <h1>Discover the gems of Italy</h1>
-      <StyledSVG version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" id="blobSvg" style={{ opacity: 1 }}><image x="0" y="0" width="100%" height="100%" clipPath="url(#shape)" href="/rialto-bridge.jpg" preserveAspectRatio="none" />
+    <StyledSection>
+      <StyledH1>Discover the gems of Italy</StyledH1>
+      <StyledH2>Italy has a long and rich history. Thus it might not come as a surprise that it is the country with the largest number of UNESCO sites in the world. Get inspired by natural areas, archaeological sites, tourist destinations and man-made masterpieces. Welcome to discover Italy!</StyledH2>
+      <StyledSVG version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" id="blobSvg" style={{ opacity: 0.5 }}><image x="0" y="0" width="100%" height="100%" clipPath="url(#shape)" href="/rialto-bridge.jpg" preserveAspectRatio="none" />
         <defs>
           <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" />
@@ -86,7 +108,7 @@ export const StartPage = () => {
       </StyledSVG>
       <form onSubmit={handleFormSubmit}>
         <label htmlFor="search">
-          <input type="search" id="search" name="search" placeholder="Enter a location" list="locationOptions" onChange={handleLocationSelect} />
+          <StyledInput type="search" id="search" name="search" placeholder="Choose your destination here" list="locationOptions" onChange={handleLocationSelect} />
           <datalist id="locationOptions">
             {locations.map((location) => (
               <option value={location.name} key={location.key}>{location.name}</option>
@@ -94,6 +116,6 @@ export const StartPage = () => {
           </datalist>
         </label>
       </form>
-    </section>
+    </StyledSection>
   );
 }
