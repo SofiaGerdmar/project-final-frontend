@@ -1,10 +1,7 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useEffect, useState } from 'react';
-import { NavLink, useParams } from 'react-router-dom';
-import { API_URL } from 'utils/urls';
-// import { Destinations } from './Destinations';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components/macro';
-// import { LocationSubpage } from './LocationSubpage';
 
 const StyledNav = styled.div`
 display: flex;
@@ -23,6 +20,10 @@ transform: translateX(-50%);
     bottom: -20px;
     width: 550px;
     border-bottom: 1px solid rgba(30, 52, 56, 0.3);
+}
+
+@media (min-width: 1024px) {
+  width: 90%;
 }
 `
 const StyledNavLink = styled(NavLink)`
@@ -79,35 +80,6 @@ position: relative;
 `
 
 export const Header = () => {
-  const { location } = useParams;
-  const [siteData, setSiteData] = useState([]);
-
-  useEffect(() => {
-    const options = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-
-    fetch(API_URL(`sites/${location}`), options)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        if (data && data.body) {
-          setSiteData(data.body)
-        }
-      })
-      .catch((error) => {
-        console.log('Error fetching data:', error);
-      });
-  }, [location]);
-
-  if (!siteData) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <StyledNav>
       <StyledNavLink to="/">Home</StyledNavLink>

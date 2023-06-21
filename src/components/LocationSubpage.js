@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import { SpinnerImg } from './SpinnerImg';
 
 library.add(faAngleRight, faAngleLeft)
 
@@ -100,8 +101,10 @@ export const LocationSubpage = () => {
   const [siteData, setSiteData] = useState([]);
   const [currentLocationIndex, setCurrentLocationIndex] = useState(0);
   const [locations, setLocations] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     const options = {
       method: 'GET',
       headers: {
@@ -128,12 +131,13 @@ export const LocationSubpage = () => {
         if (data && data.body) {
           setLocations(data.body);
           setCurrentLocationIndex(data.body.findIndex((loc) => loc.location === location));
+          setIsLoading(false);
         }
       });
   }, [location]);
 
   if (!siteData) {
-    return <div>Loading...</div>;
+    return <SpinnerImg />;
   }
 
   const handlePreviousLocation = () => {
@@ -186,18 +190,22 @@ export const LocationSubpage = () => {
 
   return (
     <section>
-      {siteData.map((site) => (
-        <StyledDiv key={site._id}>
-          <StyledPolaroid>
-            <StyledContainerTop />
-            <StyledImg src={site.img} alt={site.name} />
-            <StyledContainerBottom />
-            <StyledH4>{site.name}.</StyledH4>
-            <StyledByline>{getBylineForLocation(location)}</StyledByline>
-          </StyledPolaroid>
-          <StyledP>{site.description}</StyledP>
-        </StyledDiv>
-      ))}
+      {isLoading ? (
+        <SpinnerImg />
+      ) : (
+        siteData.map((site) => (
+          <StyledDiv key={site._id}>
+            <StyledPolaroid>
+              <StyledContainerTop />
+              <StyledImg src={site.img} alt={site.name} />
+              <StyledContainerBottom />
+              <StyledH4>{site.name}.</StyledH4>
+              <StyledByline>{getBylineForLocation(location)}</StyledByline>
+            </StyledPolaroid>
+            <StyledP>{site.description}</StyledP>
+          </StyledDiv>
+        ))
+      )}
       <StyledButtonDiv>
         <StyledArrowButtonLeft onClick={handlePreviousLocation}>
           <ArrowIcon icon={faAngleLeft} /> {getPreviousLocationName()}

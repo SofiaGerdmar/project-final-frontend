@@ -5,7 +5,6 @@
 }
 
 body {
-  margin: 0;
   font-family: "Poppins", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -20,3 +19,9 @@ body {
   color: #1e3438;
 }
 
+@media (min-width: 1024px) {
+  body {
+    max-width: 2560px;
+    position: unset;
+  }
+}

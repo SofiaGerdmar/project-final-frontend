@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { API_URL } from 'utils/urls';
 import styled from 'styled-components/macro';
+import { SpinnerImg } from './SpinnerImg';
 
 const StyledSection = styled.section`
 display: flex;
@@ -43,8 +44,10 @@ position: relative;
 `
 export const Destinations = () => {
   const [locations, setLocations] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchedLocations = new Set();
     const options = {
       method: 'GET',
@@ -68,19 +71,24 @@ export const Destinations = () => {
             }
           });
           setLocations(uniqueLocations);
+          setIsLoading(false);
         }
       })
   }, []);
 
   return (
     <StyledSection>
-      {locations.map((location) => (
-        <StyledUl>
-          <li>
-            <StyledLink to={`/${location.name}`} key={location.key}>{location.name}</StyledLink>
-          </li>
-        </StyledUl>
-      ))}
+      {isLoading ? (
+        <SpinnerImg />
+      ) : (
+        locations.map((location) => (
+          <StyledUl>
+            <li>
+              <StyledLink to={`/${location.name}`} key={location.key}>{location.name}</StyledLink>
+            </li>
+          </StyledUl>
+        ))
+      )}
     </StyledSection>
   )
 }
