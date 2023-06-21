@@ -19,7 +19,7 @@ body {
   color: #1e3438;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1025px) {
   body {
     max-width: 2560px;
     position: unset;

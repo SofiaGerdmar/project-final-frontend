@@ -17,12 +17,20 @@ display: flex;
 flex-direction: column;
 align-items: center;
 margin-top: 160px;
+
+@media (min-width: 1025px) {
+  margin-top: 200px;
+}
 `
 const StyledImg = styled.img`
 width: 92%;
 `
 const StyledContainerTop = styled.div`
 padding: 10px;
+
+@media (min-width: 1025px) {
+  padding: 20px;
+}
 `
 const StyledContainerBottom = styled.div`
 padding: 10px 0 0 0;
@@ -35,6 +43,10 @@ margin-bottom: 35px;
 display: flex;
 flex-direction: column;
 align-items: center;
+
+@media (min-width: 1025px) {
+  width: 60%;
+}
 `
 const StyledH4 = styled.h4`
 font-style: italic;
@@ -55,6 +67,10 @@ text-align: justify;
 line-height: 2.2rem;
 margin-bottom: 40px;
 word-spacing: -1px;
+
+@media (min-width: 1025px) {
+  width: 60%;
+}
 `
 const StyledButtonDiv = styled.div`
 display: flex;
@@ -101,10 +117,8 @@ export const LocationSubpage = () => {
   const [siteData, setSiteData] = useState([]);
   const [currentLocationIndex, setCurrentLocationIndex] = useState(0);
   const [locations, setLocations] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
     const options = {
       method: 'GET',
       headers: {
@@ -131,13 +145,16 @@ export const LocationSubpage = () => {
         if (data && data.body) {
           setLocations(data.body);
           setCurrentLocationIndex(data.body.findIndex((loc) => loc.location === location));
-          setIsLoading(false);
         }
       });
   }, [location]);
 
   if (!siteData) {
-    return <SpinnerImg />;
+    return <div><SpinnerImg /></div>;
+  }
+
+  if (!locations) {
+    return <div><SpinnerImg /></div>;
   }
 
   const handlePreviousLocation = () => {
@@ -190,22 +207,18 @@ export const LocationSubpage = () => {
 
   return (
     <section>
-      {isLoading ? (
-        <SpinnerImg />
-      ) : (
-        siteData.map((site) => (
-          <StyledDiv key={site._id}>
-            <StyledPolaroid>
-              <StyledContainerTop />
-              <StyledImg src={site.img} alt={site.name} />
-              <StyledContainerBottom />
-              <StyledH4>{site.name}.</StyledH4>
-              <StyledByline>{getBylineForLocation(location)}</StyledByline>
-            </StyledPolaroid>
-            <StyledP>{site.description}</StyledP>
-          </StyledDiv>
-        ))
-      )}
+      {siteData.map((site) => (
+        <StyledDiv key={site._id}>
+          <StyledPolaroid>
+            <StyledContainerTop />
+            <StyledImg src={site.img} alt={site.name} />
+            <StyledContainerBottom />
+            <StyledH4>{site.name}.</StyledH4>
+            <StyledByline>{getBylineForLocation(location)}</StyledByline>
+          </StyledPolaroid>
+          <StyledP>{site.description}</StyledP>
+        </StyledDiv>
+      ))}
       <StyledButtonDiv>
         <StyledArrowButtonLeft onClick={handlePreviousLocation}>
           <ArrowIcon icon={faAngleLeft} /> {getPreviousLocationName()}

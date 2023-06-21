@@ -22,8 +22,9 @@ transform: translateX(-50%);
     border-bottom: 1px solid rgba(30, 52, 56, 0.3);
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1025px) {
   width: 90%;
+  font-size: 1.3rem;
 }
 `
 const StyledNavLink = styled(NavLink)`

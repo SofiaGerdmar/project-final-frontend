@@ -16,6 +16,14 @@ width: 80vw;
 margin-top: 160px;
 font-weight: 400;
 line-height: 3.5rem;
+
+@media (min-width: 1025px) {
+  height: 1000px;
+  font-size: 1.2rem;
+  margin-top: 200px;
+  flex-wrap: wrap;
+  align-content: space-around;
+}
 `
 const StyledUl = styled.ul`
 list-style-type: disc;
@@ -44,10 +52,8 @@ position: relative;
 `
 export const Destinations = () => {
   const [locations, setLocations] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
     const fetchedLocations = new Set();
     const options = {
       method: 'GET',
@@ -65,30 +71,30 @@ export const Destinations = () => {
             if (!fetchedLocations.has(location.location)) {
               fetchedLocations.add(location.location);
               uniqueLocations.push({
-                name: location.location,
-                key: `${location.location}_${uniqueLocations.length}`
+                name: location.location
               });
             }
           });
           setLocations(uniqueLocations);
-          setIsLoading(false);
         }
       })
   }, []);
 
+  if (!locations) {
+    return <div><SpinnerImg /></div>;
+  }
+
   return (
     <StyledSection>
-      {isLoading ? (
-        <SpinnerImg />
-      ) : (
-        locations.map((location) => (
+      {locations.map((location) => (
+        <div key={location.name}>
           <StyledUl>
             <li>
-              <StyledLink to={`/${location.name}`} key={location.key}>{location.name}</StyledLink>
+              <StyledLink to={`/${location.name}`}>{location.name}</StyledLink>
             </li>
           </StyledUl>
-        ))
-      )}
+        </div>
+      ))}
     </StyledSection>
   )
 }
