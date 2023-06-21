@@ -12,7 +12,7 @@ const rotateAnimation = keyframes`
 const Spinner = styled.div`
   display: inline-block;
   width: 100px;
-  background-image: url(../discover.png);
+  background-image: url(./discover.png);
   background-size: cover;
   animation: ${rotateAnimation} 1s linear infinite;
 `
