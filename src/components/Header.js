@@ -1,7 +1,8 @@
 /* eslint-disable no-underscore-dangle */
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components/macro';
+import { HamburgerMenuIcon } from 'components/Hamburger';
 
 const StyledNav = styled.div`
 display: flex;
@@ -25,6 +26,10 @@ transform: translateX(-50%);
 @media (min-width: 1025px) {
   width: 90%;
   font-size: 1.3rem;
+}
+
+@media (max-width: 667px) {
+  display: none;
 }
 `
 const StyledNavLink = styled(NavLink)`
@@ -81,11 +86,25 @@ position: relative;
 `
 
 export const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const handleClick = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const headerLinks = [
+    { url: '/', text: 'Home' },
+    { url: '/destinations', text: 'Destinations' },
+    { url: 'mailto:sofia.gerdmar@gmail.com', text: 'Contact', target: '_blank', rel: 'noreferrer' }
+  ];
+
   return (
-    <StyledNav>
-      <StyledNavLink to="/">Home</StyledNavLink>
-      <StyledNavLink to="/destinations">Destinations</StyledNavLink>
-      <StyledLink href="mailto:sofia.gerdmar@gmail.com" target="_blank" rel="noreferrer">Contact</StyledLink>
-    </StyledNav>
+    <>
+      <HamburgerMenuIcon isOpen={isOpen} onClick={handleClick} links={headerLinks} />
+      <StyledNav>
+        <StyledNavLink to="/">Home</StyledNavLink>
+        <StyledNavLink to="/destinations">Destinations</StyledNavLink>
+        <StyledLink href="mailto:sofia.gerdmar@gmail.com" target="_blank" rel="noreferrer">Contact</StyledLink>
+      </StyledNav>
+    </>
   );
 };

@@ -6,12 +6,17 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from 'utils/urls';
 import styled from 'styled-components/macro';
-import { SpinnerImg } from './SpinnerImg';
+import { SpinnerImg } from 'components/SpinnerImg';
 
 const StyledSection = styled.section`
 display: flex;
 flex-direction: column;
 align-items: center;
+
+@media (max-width: 667px) {
+  max-width: 100vw;
+}
+
 `
 const StyledSVG = styled.svg`
 display: flex;
@@ -21,6 +26,10 @@ width: 1000px;
 z-index: -1;
 position: absolute;
 top: 40px;
+
+@media (max-width: 667px) {
+  display: none;
+}
 `
 const StyledInput = styled.input`
 background-color: rgba(250, 250, 250, 0.9);
@@ -40,6 +49,13 @@ font-size: 2.5rem;
 font-weight: 700;
 margin: 290px 0 40px 0;
 z-index: 1;
+
+@media (max-width: 667px) {
+  width: 300px;
+  line-height: 2.5rem;
+  text-align: center;
+  margin: 40px 0 40px 0;
+}
 `
 const StyledH2 = styled.h2`
 font-size: 1.2rem;
@@ -48,6 +64,10 @@ font-style: italic;
 text-align: center;
 line-height: 2rem;
 width: 620px;
+
+@media (max-width: 667px) {
+  width: 300px;
+}
 `
 export const StartPage = () => {
   const navigate = useNavigate();

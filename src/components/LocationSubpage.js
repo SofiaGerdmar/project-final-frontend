@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { SpinnerImg } from './SpinnerImg';
+import { SpinnerImg } from 'components/SpinnerImg';
 
 library.add(faAngleRight, faAngleLeft)
 

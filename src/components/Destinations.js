@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { API_URL } from 'utils/urls';
 import styled from 'styled-components/macro';
-import { SpinnerImg } from './SpinnerImg';
+import { SpinnerImg } from 'components/SpinnerImg';
 
 const StyledSection = styled.section`
 display: flex;
@@ -24,10 +24,18 @@ line-height: 3.5rem;
   flex-wrap: wrap;
   align-content: space-around;
 }
+
+@media (max-width: 667px) {
+  column-count: 1;
+  height: auto;
+  margin-top: 20px;
+}
 `
 const StyledUl = styled.ul`
 list-style-type: disc;
 color: #5a9daf;
+
+@media (max-width: 667px)
 `
 const StyledLink = styled(Link)`
 text-decoration: none;

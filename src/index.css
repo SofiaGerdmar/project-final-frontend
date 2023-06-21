@@ -25,3 +25,10 @@ body {
     position: unset;
   }
 }
+
+@media (max-width: 667px) {
+  body {
+    max-width: 667px;
+    position: static;
+  }
+}
