@@ -19,6 +19,26 @@ body {
   color: #1e3438;
 }
 
+.spinner {
+  width: 100px;
+  height: 100px;
+  top:150px;
+  display: block;
+  margin:15px auto;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 @media (min-width: 1025px) {
   body {
     max-width: 2560px;
