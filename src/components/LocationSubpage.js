@@ -22,6 +22,10 @@ margin-top: 160px;
   margin-top: 200px;
 }
 `
+const StyledH1 = styled.h1`
+font-size: 1.5rem;
+margin-bottom: 20px;
+`
 const StyledImg = styled.img`
 width: 92%;
 `
@@ -117,6 +121,8 @@ export const LocationSubpage = () => {
   const [siteData, setSiteData] = useState([]);
   const [currentLocationIndex, setCurrentLocationIndex] = useState(0);
   const [locations, setLocations] = useState([]);
+  const [currentLocation, setCurrentLocation] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const options = {
@@ -133,11 +139,15 @@ export const LocationSubpage = () => {
       .then((data) => {
         if (data && data.body) {
           setSiteData(data.body)
+          setCurrentLocation(data.body.length > 0 ? data.body[0].location : '');
         }
       })
       .catch((error) => {
         console.log('Error fetching data:', error);
-      });
+      })
+      .finally(() => {
+        setTimeout(() => setLoading(false), 1500)
+      })
 
     fetch(API_URL('sites'), options)
       .then((res) => res.json())
@@ -146,30 +156,37 @@ export const LocationSubpage = () => {
           setLocations(data.body);
           setCurrentLocationIndex(data.body.findIndex((loc) => loc.location === location));
         }
-      });
+      })
+      .catch((error) => {
+        console.error(console.error(error))
+      })
+      .finally(() => {
+        setTimeout(() => setLoading(false), 1500)
+      })
   }, [location]);
 
-  if (!siteData) {
-    return <div><SpinnerImg /></div>;
-  }
-
-  if (!locations) {
-    return <div><SpinnerImg /></div>;
+  if (loading) {
+    return (
+      <div>
+        <h1>Loading...</h1>
+        <SpinnerImg />
+      </div>
+    )
   }
 
   const handlePreviousLocation = () => {
     const previousLocationIndex = (currentLocationIndex - 1 + locations.length) % locations.length;
 
     if (previousLocationIndex >= 0 && previousLocationIndex < locations.length) {
-      const previousLocation = locations[previousLocationIndex].location;
-      const encodedPreviousLocation = encodeURIComponent(previousLocation);
-      navigate(`/${encodedPreviousLocation}`);
+      const previousLocation = locations[previousLocationIndex]; // Get the previous location object
+      navigate(`/${previousLocation.location}`);
     }
   };
+
   const getPreviousLocationName = () => {
     const previousLocationIndex = (currentLocationIndex - 1 + locations.length) % locations.length;
     if (previousLocationIndex >= 0 && previousLocationIndex < locations.length) {
-      return locations[previousLocationIndex].location;
+      return locations[previousLocationIndex].location; // Use location for display
     }
     return '';
   };
@@ -178,15 +195,15 @@ export const LocationSubpage = () => {
     const nextLocationIndex = (currentLocationIndex + 1) % locations.length;
 
     if (nextLocationIndex >= 0 && nextLocationIndex < locations.length) {
-      const nextLocation = locations[nextLocationIndex].location;
-      const encodedNextLocation = encodeURIComponent(nextLocation);
-      navigate(`/${encodedNextLocation}`);
+      const nextLocation = locations[nextLocationIndex]; // Get the next location object
+      navigate(`/${nextLocation.location}`);
     }
   };
+
   const getNextLocationName = () => {
     const nextLocationIndex = (currentLocationIndex + 1) % locations.length;
     if (nextLocationIndex >= 0 && nextLocationIndex < locations.length) {
-      return locations[nextLocationIndex].location;
+      return locations[nextLocationIndex].location; // Use location for display
     }
     return '';
   };
@@ -209,6 +226,7 @@ export const LocationSubpage = () => {
     <section>
       {siteData.map((site) => (
         <StyledDiv key={site._id}>
+          <StyledH1>{currentLocation}</StyledH1>
           <StyledPolaroid>
             <StyledContainerTop />
             <StyledImg src={site.img} alt={site.name} />

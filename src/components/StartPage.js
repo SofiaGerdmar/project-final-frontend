@@ -16,7 +16,6 @@ align-items: center;
 @media (max-width: 667px) {
   max-width: 100vw;
 }
-
 `
 const StyledSVG = styled.svg`
 display: flex;
@@ -73,6 +72,7 @@ export const StartPage = () => {
   const navigate = useNavigate();
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const options = {
@@ -92,7 +92,13 @@ export const StartPage = () => {
           }));
           setLocations(locationNames);
         }
-      });
+      })
+      .catch((e) => {
+        console.error(console.error(e))
+      })
+      .finally(() => {
+        setTimeout(() => setLoading(false), 1500)
+      })
   }, []);
 
   const handleLocationSelect = (event) => {
@@ -106,8 +112,13 @@ export const StartPage = () => {
     }
   };
 
-  if (!locations) {
-    return <div><SpinnerImg /></div>;
+  if (loading) {
+    return (
+      <div>
+        <h1>Loading...</h1>
+        <SpinnerImg />
+      </div>
+    )
   }
 
   return (

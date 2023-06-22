@@ -35,7 +35,9 @@ const StyledUl = styled.ul`
 list-style-type: disc;
 color: #5a9daf;
 
-@media (max-width: 667px)
+@media (max-width: 667px) {
+
+}
 `
 const StyledLink = styled(Link)`
 text-decoration: none;
@@ -60,6 +62,7 @@ position: relative;
 `
 export const Destinations = () => {
   const [locations, setLocations] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchedLocations = new Set();
@@ -86,10 +89,21 @@ export const Destinations = () => {
           setLocations(uniqueLocations);
         }
       })
+      .catch((e) => {
+        console.error(console.error(e))
+      })
+      .finally(() => {
+        setTimeout(() => setLoading(false), 1500)
+      });
   }, []);
 
-  if (!locations) {
-    return <div><SpinnerImg /></div>;
+  if (loading) {
+    return (
+      <div>
+        <h1>Loading...</h1>
+        <SpinnerImg />
+      </div>
+    )
   }
 
   return (
