@@ -21,6 +21,10 @@ margin-top: 160px;
 @media (min-width: 1025px) {
   margin-top: 200px;
 }
+
+@media (max-width: 667px) {
+  margin-top: 50px;
+}
 `
 const StyledH1 = styled.h1`
 font-size: 1.5rem;
@@ -51,6 +55,10 @@ align-items: center;
 @media (min-width: 1025px) {
   width: 60%;
 }
+
+@media (max-width: 667px) {
+  width: 100%;
+}
 `
 const StyledH4 = styled.h4`
 font-style: italic;
@@ -70,10 +78,19 @@ width: 600px;
 text-align: justify;
 line-height: 2.2rem;
 margin-bottom: 40px;
-word-spacing: -1px;
 
 @media (min-width: 1025px) {
   width: 60%;
+}
+
+@media (min-width: 668px) and (max-width: 1023px) {
+  width: 70%;
+  hyphens: auto;
+}
+
+@media (max-width: 667px) {
+  width: 90%;
+  hyphens: auto;
 }
 `
 const StyledButtonDiv = styled.div`

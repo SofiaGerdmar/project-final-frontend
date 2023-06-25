@@ -16,6 +16,10 @@ align-items: center;
 @media (max-width: 667px) {
   max-width: 100vw;
 }
+
+@media (min-width: 668px) and (max-width: 1023px) {
+  max-width: 100vw;
+}
 `
 const StyledSVG = styled.svg`
 display: flex;
@@ -28,6 +32,10 @@ top: 40px;
 
 @media (max-width: 667px) {
   display: none;
+}
+
+@media (min-width: 668px) and (max-width: 1023px) {
+  width: 90vw;
 }
 `
 const StyledInput = styled.input`
