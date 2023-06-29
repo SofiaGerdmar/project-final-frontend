@@ -139,57 +139,45 @@ export const LocationSubpage = () => {
   const [currentLocationIndex, setCurrentLocationIndex] = useState(0);
   const [locations, setLocations] = useState([]);
   const [currentLocation, setCurrentLocation] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
   useEffect(() => {
-    const options = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
+    const fetchData = async () => {
+      try {
+        const options = {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        };
+
+        const response1 = await fetch(API_URL(`sites/${location}`), options);
+        const data1 = await response1.json();
+
+        if (data1 && data1.success) {
+          setSiteData(data1.body)
+          setCurrentLocation(data1.body.length > 0 ? data1.body[0].location : '');
+        } else {
+          throw new Error(data1.body.message);
+        }
+
+        const response2 = await fetch(API_URL('sites'), options);
+        const data2 = await response2.json();
+
+        if (data2 && data2.body) {
+          setLocations(data2.body);
+          setCurrentLocationIndex(data2.body.findIndex((loc) => loc.location === location));
+        }
+      } catch (error) {
+        setFetchError(error.message)
+      } finally {
+        setLoading(false)
       }
     };
 
-    fetch(API_URL(`sites/${location}`), options)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        if (data && data.body) {
-          setSiteData(data.body)
-          setCurrentLocation(data.body.length > 0 ? data.body[0].location : '');
-        }
-      })
-      .catch((error) => {
-        console.log('Error fetching data:', error);
-      })
-      .finally(() => {
-        setTimeout(() => setLoading(false), 1500)
-      })
-
-    fetch(API_URL('sites'), options)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data && data.body) {
-          setLocations(data.body);
-          setCurrentLocationIndex(data.body.findIndex((loc) => loc.location === location));
-        }
-      })
-      .catch((error) => {
-        console.error(console.error(error))
-      })
-      .finally(() => {
-        setTimeout(() => setLoading(false), 1500)
-      })
+    fetchData();
   }, [location]);
-
-  if (loading) {
-    return (
-      <div>
-        <h1>Loading...</h1>
-        <SpinnerImg />
-      </div>
-    )
-  }
 
   const handlePreviousLocation = () => {
     const previousLocationIndex = (currentLocationIndex - 1 + locations.length) % locations.length;
@@ -239,29 +227,38 @@ export const LocationSubpage = () => {
     return locationBylines[loc] || '';
   };
 
-  return (
-    <section>
-      {siteData.map((site) => (
-        <StyledDiv key={site._id}>
-          <StyledH1>{currentLocation}</StyledH1>
-          <StyledPolaroid>
-            <StyledContainerTop />
-            <StyledImg src={site.img} alt={site.name} />
-            <StyledContainerBottom />
-            <StyledH4>{site.name}.</StyledH4>
-            <StyledByline>{getBylineForLocation(location)}</StyledByline>
-          </StyledPolaroid>
-          <StyledP>{site.description}</StyledP>
-        </StyledDiv>
-      ))}
-      <StyledButtonDiv>
-        <StyledArrowButtonLeft onClick={handlePreviousLocation}>
-          <ArrowIcon icon={faAngleLeft} /> {getPreviousLocationName()}
-        </StyledArrowButtonLeft>
-        <StyledArrowButtonRight onClick={handleNextLocation}>
-          {getNextLocationName()} <ArrowIcon icon={faAngleRight} />
-        </StyledArrowButtonRight>
-      </StyledButtonDiv>
-    </section>
-  );
+  let content;
+  if (loading) {
+    content = <SpinnerImg />
+  } else if (fetchError) {
+    content = <p>Error: {fetchError}</p>;
+  } else {
+    content = (
+      <section>
+        {siteData.map((site) => (
+          <StyledDiv key={site._id}>
+            <StyledH1>{currentLocation}</StyledH1>
+            <StyledPolaroid>
+              <StyledContainerTop />
+              <StyledImg src={site.img} alt={site.name} />
+              <StyledContainerBottom />
+              <StyledH4>{site.name}.</StyledH4>
+              <StyledByline>{getBylineForLocation(location)}</StyledByline>
+            </StyledPolaroid>
+            <StyledP>{site.description}</StyledP>
+          </StyledDiv>
+        ))}
+        <StyledButtonDiv>
+          <StyledArrowButtonLeft onClick={handlePreviousLocation}>
+            <ArrowIcon icon={faAngleLeft} /> {getPreviousLocationName()}
+          </StyledArrowButtonLeft>
+          <StyledArrowButtonRight onClick={handleNextLocation}>
+            {getNextLocationName()} <ArrowIcon icon={faAngleRight} />
+          </StyledArrowButtonRight>
+        </StyledButtonDiv>
+      </section>
+    );
+  }
+
+  return <section>{content}</section>
 };

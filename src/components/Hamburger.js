@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
+import { v4 as uuidv4 } from 'uuid';
 
 const StyledHamburgerDiv = styled.div`
 display: flex;
@@ -101,8 +102,8 @@ export const HamburgerMenuIcon = ({ isOpen, onClick, links }) => {
         <MenuList>
           <MenuItem>
             <StyledMenuLinks isOpen={isOpen}>
-              {links.map((link, index) => (
-                <StyledNavLink to={link.url} key={index._id} onClick={onClick}>
+              {links.map((link) => (
+                <StyledNavLink to={link.url} key={uuidv4()} onClick={onClick}>
                   {link.text}
                 </StyledNavLink>
               ))}

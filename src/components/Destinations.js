@@ -62,20 +62,23 @@ position: relative;
 `
 export const Destinations = () => {
   const [locations, setLocations] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
   useEffect(() => {
-    const fetchedLocations = new Set();
-    const options = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
+    const fetchData = async () => {
+      try {
+        const fetchedLocations = new Set();
+        const options = {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        };
 
-    fetch(API_URL('sites'), options)
-      .then((res) => res.json())
-      .then((data) => {
+        const response = await fetch(API_URL('sites'), options);
+        const data = await response.json();
+
         if (data && data.body) {
           const uniqueLocations = [];
           data.body.forEach((location) => {
@@ -87,36 +90,38 @@ export const Destinations = () => {
             }
           });
           setLocations(uniqueLocations);
+        } else {
+          throw new Error(data.body.message);
         }
-      })
-      .catch((e) => {
-        console.error(console.error(e))
-      })
-      .finally(() => {
-        setTimeout(() => setLoading(false), 1500)
-      });
+      } catch (error) {
+        setFetchError(error.message)
+      } finally {
+        setLoading(false)
+      }
+    };
+    fetchData();
   }, []);
 
+  let content;
   if (loading) {
-    return (
-      <div>
-        <h1>Loading...</h1>
-        <SpinnerImg />
-      </div>
-    )
+    content = <SpinnerImg />
+  } else if (fetchError) {
+    content = <p>Error: {fetchError}</p>;
+  } else {
+    content = (
+      <>
+        {locations.map((location) => (
+          <div key={location.name}>
+            <StyledUl>
+              <li>
+                <StyledLink to={`/${location.name}`}>{location.name}</StyledLink>
+              </li>
+            </StyledUl>
+          </div>
+        ))}
+      </>
+    );
   }
 
-  return (
-    <StyledSection>
-      {locations.map((location) => (
-        <div key={location.name}>
-          <StyledUl>
-            <li>
-              <StyledLink to={`/${location.name}`}>{location.name}</StyledLink>
-            </li>
-          </StyledUl>
-        </div>
-      ))}
-    </StyledSection>
-  )
-}
+  return <StyledSection>{content}</StyledSection>
+};
