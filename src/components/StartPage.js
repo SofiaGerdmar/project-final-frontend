@@ -43,6 +43,7 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 20px;
 }
 `
 const StyledInput = styled.input`
@@ -59,7 +60,7 @@ z-index: 1;
 margin-top: 250px;
 
 @media (max-width: 667px) {
-  margin-top: 100px;
+  margin-top: 60px;
 }
 `
 const StyledH1 = styled.h1`
@@ -107,6 +108,7 @@ transition: background-color 0.5s ease, color 0.5s ease;
 
 @media (max-width: 667px) {
   margin-top: 15px;
+  padding: 5px 20px;
 }
 `
 export const StartPage = () => {
