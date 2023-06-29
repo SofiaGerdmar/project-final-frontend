@@ -38,6 +38,13 @@ top: 40px;
   width: 90vw;
 }
 `
+const StyledForm = styled.form`
+@media (max-width: 667px) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+`
 const StyledInput = styled.input`
 background-color: rgba(250, 250, 250, 0.9);
 color: black;
@@ -78,6 +85,28 @@ width: 620px;
 
 @media (max-width: 667px) {
   width: 300px;
+}
+`
+const StyledBtn = styled.button`
+border-radius: 1.3rem;
+border: none;
+font-family: 'Poppins', sans-serif;
+padding: 10px 20px;
+font-size: 1rem;
+background-color: #5a9daf;
+color: white;
+font-weight: 500;
+margin-left: 10px;
+cursor: pointer;
+transition: background-color 0.5s ease, color 0.5s ease;
+
+&:hover {
+  background-color: white;
+  color: #1e3438;
+}
+
+@media (max-width: 667px) {
+  margin-top: 15px;
 }
 `
 export const StartPage = () => {
@@ -155,7 +184,7 @@ export const StartPage = () => {
             </path>
           </clipPath>
         </StyledSVG>
-        <form onSubmit={handleFormSubmit}>
+        <StyledForm onSubmit={handleFormSubmit}>
           <label htmlFor="search">
             <StyledInput type="search" id="search" name="search" placeholder="Choose your destination here" list="locationOptions" onChange={handleLocationSelect} autoComplete="off" />
             <datalist id="locationOptions">
@@ -164,8 +193,8 @@ export const StartPage = () => {
               ))}
             </datalist>
           </label>
-          <button type="submit">Go</button>
-        </form>
+          <StyledBtn type="submit">Go</StyledBtn>
+        </StyledForm>
       </>
     );
   }
