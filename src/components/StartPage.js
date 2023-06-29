@@ -157,13 +157,14 @@ export const StartPage = () => {
         </StyledSVG>
         <form onSubmit={handleFormSubmit}>
           <label htmlFor="search">
-            <StyledInput type="search" id="search" name="search" placeholder="Choose your destination here" list="locationOptions" onChange={handleLocationSelect} />
+            <StyledInput type="search" id="search" name="search" placeholder="Choose your destination here" list="locationOptions" onChange={handleLocationSelect} autoComplete="off" />
             <datalist id="locationOptions">
               {locations.map((location) => (
                 <option value={location.name} key={location.key}>{location.name}</option>
               ))}
             </datalist>
           </label>
+          <button type="submit">Go</button>
         </form>
       </>
     );
