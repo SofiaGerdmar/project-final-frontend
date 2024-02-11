@@ -7,7 +7,7 @@ display: flex;
 flex-direction: column;
 align-items: center;
 position: absolute;
-top: 50%;
+top: 50vh;
 left: 50%;
 transform: translate(-50%, -50%);
 `
