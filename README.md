@@ -15,3 +15,8 @@ I am especially proud of the image blob featured on the startpage and the fact t
 ## View it live
 
 https://discoveritaly.netlify.app/
+
+## Backend
+
+https://github.com/SofiaGerdmar/project-final-backend
+https://project-final-backend.onrender.com
